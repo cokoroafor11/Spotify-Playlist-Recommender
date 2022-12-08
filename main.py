@@ -2,14 +2,9 @@ from setup import *
 import pandas as pd
 import numpy as np
 from IPython.display import display
+from playlists_db_setup import *
 
 
-def convert_playlist_to_dataframe(playlist):
-    '''Convert a playlist of songs to a dataframe'''
-    songlist = extract_songs(playlist)
-    song_data = populate_song_info(songlist)
-    df = pd.DataFrame(song_data)
-    return df
 
 
 def callback(text):
@@ -198,10 +193,10 @@ def print_user_statistics(statistics):
         ''')
         
 
-def export_user_statistics(input_playlist):
-    df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
-    df.index = ['Average','Variance','Std Dev','Min', 'Max']
-    df.to_excel("Statistics.xlsx")       
+    def export_user_statistics(input_playlist):
+        df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
+        df.index = ['Average','Variance','Std Dev','Min', 'Max']
+        df.to_excel("Statistics.xlsx")       
 
 
 def compare_features(avg,var,song_features):
@@ -255,7 +250,7 @@ def run(user_playlist_input):
     '''This controls the main flow of the application, connecting to the Gui'''
     
     #Populate dataframe with list of playlists from excel
-    playlists = excel_list_to_df()
+    #playlists = excel_list_to_df()
 
     #Initialize array for final playlist outputted to user
     output_playlist = []
@@ -284,7 +279,7 @@ def run(user_playlist_input):
 
 #display(convert_playlist_to_dataframe('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=cd77f41837b3443f'))
 #print(excel_list_to_df())
-#run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
+run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
 
 #CURRENT ISSUES
 #REMOVE DUPLICATES

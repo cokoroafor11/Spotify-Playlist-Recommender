@@ -1,21 +1,19 @@
 import spotipy
 import pandas as pd
 from spotipy.oauth2 import SpotifyClientCredentials
+import spotipy.util as util
 client_id = "c1f74565be774e65aa211462aaf5fed8"
 client_secret = "2edce4052f8f46639c0e112658572d66"
-spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= client_id,client_secret=client_secret))
+spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= client_id,client_secret=client_secret),requests_timeout=10000,retries=10)
 
 
-def excel_list_to_df():
-    '''Create the dataframe from the excel sheet of playlists'''
 
-    df = pd.read_excel("Spotify Playlists.xlsx")
-    playlists = df['Link']
-    return playlists
+
 
 
 def extract_songs(playlist):
     '''Function to extract songs from a playlist: Will run this for all the playlists being added'''
+
     if type(playlist) != str: 
         playlist = str(playlist)
         
@@ -29,12 +27,23 @@ def extract_songs(playlist):
     return tracks
 
 
-#Function to get score for feature type of a song
+
 def get_scores(song, feature):
-    feature_score = spotify.audio_features(song)[0][feature]
+    '''Function to get score for feature type of a song'''
+    feature_score = 0
+    try:
+        feature_score = spotify.audio_features(song)[0][feature]
+    except TypeError:
+        feature_score = 0
+        pass
     return feature_score
    
-
+def convert_playlist_to_dataframe(playlist):
+    '''Convert a playlist of songs to a dataframe'''
+    songlist = extract_songs(playlist)
+    song_data = populate_song_info(songlist)
+    df = pd.DataFrame(song_data)
+    return df
 
 def populate_song_info(songlist):
     '''
@@ -81,6 +90,7 @@ def populate_song_info(songlist):
 
 def get_track_artists(track):
     '''Get all artists for each track'''
+
     artists = []
     for artist in spotify.track(track)['artists']:
         artists.append(artist['name'])
