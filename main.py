@@ -1,19 +1,16 @@
 from setup import *
 import pandas as pd
 import numpy as np
-from urllib.error import HTTPError
+from IPython.display import display
 
-def excel_list_to_df():
-    ##Create the dataframe from the excel sheet of playlists
-    df = pd.read_excel("Spotify Playlists.xlsx")
-    playlists = df['Link']
-    return playlists
-    
+
 def convert_playlist_to_dataframe(playlist):
+    '''Convert a playlist of songs to a dataframe'''
     songlist = extract_songs(playlist)
     song_data = populate_song_info(songlist)
     df = pd.DataFrame(song_data)
     return df
+
 
 def callback(text):
     try:
@@ -21,7 +18,10 @@ def callback(text):
     except Exception as x:
         print("You did not enter a valid URL/URI. Please try again.")
 
+
 def get_user_statistics(song_features):
+    '''Get statistics for the inputted playlist'''
+
     averages = {}
     variances = {}
     stdevs = {}
@@ -109,10 +109,14 @@ def get_user_statistics(song_features):
     maxes['instrumentalness'] = max_instrumentalness
     maxes['liveness'] = max_liveness
     maxes['valence'] = max_valence
+    
 
     return averages,variances,stdevs,mins,maxes
 
+
 def print_user_statistics(statistics):
+    '''Print statistics for the inputted playlist'''
+
     avg = statistics[0]
     var = statistics[1]
     std = statistics[2]
@@ -120,26 +124,26 @@ def print_user_statistics(statistics):
     max = statistics[4]
 
     print(f'''
-            Average Danceability: {avg['danceability']}
-            Variance in Danceability: {var['danceability']}
-            Standard Deviation in Danceability: {std['danceability']}
-            Minimum Danceability: {min['danceability']}
-            Maximum Danceability: {max['danceability']}
-            ''')
+        Average Danceability: {avg['danceability']}
+        Variance in Danceability: {var['danceability']}
+        Standard Deviation in Danceability: {std['danceability']}
+        Minimum Danceability: {min['danceability']}
+        Maximum Danceability: {max['danceability']}
+        ''')
     print(f'''
-            Average Energy: {avg['energy']}
-            Variance in Energy: {var['energy']}
-            Standard Deviation in Energy: {std['energy']}
-            Minimum Energy: {min['energy']}
-            Maximum Energy: {max['energy']}
-            ''')
+        Average Energy: {avg['energy']}
+        Variance in Energy: {var['energy']}
+        Standard Deviation in Energy: {std['energy']}
+        Minimum Energy: {min['energy']}
+        Maximum Energy: {max['energy']}
+        ''')
     print(f'''
-            Average Speechiness: {avg['speechiness']}
-            Variance in Speechiness: {var['speechiness']}
-            Standard Deviation in Speechiness: {std['speechiness']}
-            Minimum Speechiness: {min['speechiness']}
-            Maximum Speechiness: {max['speechiness']}
-            ''')
+        Average Speechiness: {avg['speechiness']}
+        Variance in Speechiness: {var['speechiness']}
+        Standard Deviation in Speechiness: {std['speechiness']}
+        Minimum Speechiness: {min['speechiness']}
+        Maximum Speechiness: {max['speechiness']}
+        ''')
     
     print(f'''
         Average Acousticness: {avg['acousticness']}
@@ -150,51 +154,60 @@ def print_user_statistics(statistics):
         ''')
 
     print(f'''
-            Average Instrumentalness: {avg['instrumentalness']}
-            Variance in Instrumentalness: {var['instrumentalness']}
-            Standard Deviation in Instrumentalness: {std['instrumentalness']}
-            Minimum Instrumentalness: {min['instrumentalness']}
-            Maximum Instrumentalness: {max['instrumentalness']}
-            ''')
+        Average Instrumentalness: {avg['instrumentalness']}
+        Variance in Instrumentalness: {var['instrumentalness']}
+        Standard Deviation in Instrumentalness: {std['instrumentalness']}
+        Minimum Instrumentalness: {min['instrumentalness']}
+        Maximum Instrumentalness: {max['instrumentalness']}
+        ''')
 
     print(f'''
-            Average Liveness: {avg['liveness']}
-            Variance in Liveness: {var['liveness']}
-            Standard Deviation in Liveness: {std['liveness']}
-            Minimum Liveness: {min['liveness']}
-            Maximum Liveness: {max['liveness']}
-            ''')    
+        Average Liveness: {avg['liveness']}
+        Variance in Liveness: {var['liveness']}
+        Standard Deviation in Liveness: {std['liveness']}
+        Minimum Liveness: {min['liveness']}
+        Maximum Liveness: {max['liveness']}
+        ''')    
     
     print(f'''
-            Average Valence: {avg['valence']}
-            Variance in Valence: {var['valence']}
-            Standard Deviation in Valence: {std['valence']}
-            Minimum Valence: {min['valence']}
-            Maximum Valence: {max['valence']}
-            ''')
+        Average Valence: {avg['valence']}
+        Variance in Valence: {var['valence']}
+        Standard Deviation in Valence: {std['valence']}
+        Minimum Valence: {min['valence']}
+        Maximum Valence: {max['valence']}
+        ''')
 
     print(f'''
-            Ranges in all features using variance:
-            Danceability: {avg['danceability'] - var['danceability']} - {avg['danceability'] + var['danceability']}
-            Energy: {avg['energy'] - var['energy']} - {avg['energy'] + var['energy']}
-            Speechiness: {avg['speechiness'] - var['speechiness']} - {avg['speechiness'] + var['speechiness']}
-            Acousticness: {avg['acousticness'] - var['acousticness']} - {avg['acousticness'] + var['acousticness']}
-            Instrumentalness: {avg['instrumentalness'] - var['instrumentalness']} - {avg['instrumentalness'] + var['instrumentalness']}
-            Liveness: {avg['liveness'] - var['liveness']} - {avg['liveness'] + var['liveness']}
-            Valence: {avg['liveness'] - var['valence']} - {avg['liveness'] + var['valence']}
+        Ranges in all features using variance:
+        Danceability: {avg['danceability'] - var['danceability']} - {avg['danceability'] + var['danceability']}
+        Energy: {avg['energy'] - var['energy']} - {avg['energy'] + var['energy']}
+        Speechiness: {avg['speechiness'] - var['speechiness']} - {avg['speechiness'] + var['speechiness']}
+        Acousticness: {avg['acousticness'] - var['acousticness']} - {avg['acousticness'] + var['acousticness']}
+        Instrumentalness: {avg['instrumentalness'] - var['instrumentalness']} - {avg['instrumentalness'] + var['instrumentalness']}
+        Liveness: {avg['liveness'] - var['liveness']} - {avg['liveness'] + var['liveness']}
+        Valence: {avg['liveness'] - var['valence']} - {avg['liveness'] + var['valence']}
 
-            Ranges in all features using standard deviation:
-            Danceability: {avg['danceability'] - std['danceability']} - {avg['danceability'] + std['danceability']}
-            Energy: {avg['energy'] - std['energy']} - {avg['energy'] + std['energy']}
-            Speechiness: {avg['speechiness'] - std['speechiness']} - {avg['speechiness'] + std['speechiness']}
-            Acousticness: {avg['acousticness'] - std['acousticness']} - {avg['acousticness'] + std['acousticness']}
-            Instrumentalness: {avg['instrumentalness'] - std['instrumentalness']} - {avg['instrumentalness'] + std['instrumentalness']}
-            Liveness: {avg['liveness'] - std['liveness']} - {avg['liveness'] + std['liveness']}
-            Valence: {avg['liveness'] - std['valence']} - {avg['liveness'] + std['valence']}
-            ''')
+        Ranges in all features using standard deviation:
+        Danceability: {avg['danceability'] - std['danceability']} - {avg['danceability'] + std['danceability']}
+        Energy: {avg['energy'] - std['energy']} - {avg['energy'] + std['energy']}
+        Speechiness: {avg['speechiness'] - std['speechiness']} - {avg['speechiness'] + std['speechiness']}
+        Acousticness: {avg['acousticness'] - std['acousticness']} - {avg['acousticness'] + std['acousticness']}
+        Instrumentalness: {avg['instrumentalness'] - std['instrumentalness']} - {avg['instrumentalness'] + std['instrumentalness']}
+        Liveness: {avg['liveness'] - std['liveness']} - {avg['liveness'] + std['liveness']}
+        Valence: {avg['liveness'] - std['valence']} - {avg['liveness'] + std['valence']}
+        ''')
+        
 
-#For each feature, this function checks if a given song is in range of user playlist average+-variance.
+def export_user_statistics(input_playlist):
+    df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
+    df.index = ['Average','Variance','Std Dev','Min', 'Max']
+    df.to_excel("Statistics.xlsx")       
+
+
 def compare_features(avg,var,song_features):
+    '''
+    For each feature, this function checks if a given song is in range of user playlist average+-variance.
+    '''
     arr = []
     feature = 'danceability'
     if song_features[feature] >= avg[feature]-var[feature] and song_features[feature] <= avg[feature]+var[feature]:
@@ -226,14 +239,21 @@ def compare_features(avg,var,song_features):
     return len(arr),arr
 
 def export_playlist(playlist):
+    '''Export the playlist to an excel sheet in the location of the project'''
     track_info = []
+
+    #For each song, append the track name, artist and link as an array to the track info array
     for song in playlist:
         track_info.append([get_track_name(song),','.join(get_track_artists(song)),song])
 
+    #Convert to dataframe and export to excel in same location as project
     df = pd.DataFrame(track_info,columns = ['Track Name', 'Artists', 'Link'])
     df.to_excel("Songs.xlsx")
 
+
 def run(user_playlist_input):
+    '''This controls the main flow of the application, connecting to the Gui'''
+    
     #Populate dataframe with list of playlists from excel
     playlists = excel_list_to_df()
 
@@ -248,7 +268,7 @@ def run(user_playlist_input):
 
     #Print user playlist statistics
     print("Below are the statistics surrounding your inputted playlist")
-    print_user_statistics(get_user_statistics())
+    print_user_statistics(get_user_statistics(user_playlist))
 
     #Put all this info into an array
     for playlist in playlists:
@@ -256,11 +276,15 @@ def run(user_playlist_input):
         #This tells us how many features of the compared song are in range of the user playlist averages
         song_features = convert_playlist_to_dataframe(playlist)
         for song in song_features.iloc():
-            if (compare_features(user_avg,user_var,song)> 1) & (song['link'] not in output_playlist):
+            if (compare_features(user_avg,user_var,song)[0]> 1) & (song['link'] not in output_playlist):
                 output_playlist.append(song['link'])
     
+    export_playlist(output_playlist)
+    
 
-
+#display(convert_playlist_to_dataframe('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=cd77f41837b3443f'))
+#print(excel_list_to_df())
+#run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
 
 #CURRENT ISSUES
 #REMOVE DUPLICATES

@@ -6,26 +6,42 @@ client_secret = "2edce4052f8f46639c0e112658572d66"
 spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= client_id,client_secret=client_secret))
 
 
-#Function to extract songs from a playlist: Will run this for all the playlists being added
+def excel_list_to_df():
+    '''Create the dataframe from the excel sheet of playlists'''
+
+    df = pd.read_excel("Spotify Playlists.xlsx")
+    playlists = df['Link']
+    return playlists
+
+
 def extract_songs(playlist):
+    '''Function to extract songs from a playlist: Will run this for all the playlists being added'''
     if type(playlist) != str: 
         playlist = str(playlist)
         
     playlist_tracks =  spotify.playlist_tracks(playlist)
     tracks = []
     for elem in playlist_tracks['items']:
-        tracks.append(elem['track']['external_urls']['spotify'])
-
+        try:
+            tracks.append(elem['track']['external_urls']['spotify'])
+        except TypeError:
+            pass
     return tracks
+
 
 #Function to get score for feature type of a song
 def get_scores(song, feature):
     feature_score = spotify.audio_features(song)[0][feature]
     return feature_score
    
-#Function that populates an dictionary where keys are the audio features and values are an array of scores for each song
-#This function performs the lionshare of data setup
+
+
 def populate_song_info(songlist):
+    '''
+    Function that populates an dictionary where keys are the audio features and values are an array of scores for each song
+    This function performs the lionshare of data setup
+    '''
+    #Storage for various types of data
     song_data = {}
     name_array = []
     dance_array = []
@@ -37,7 +53,7 @@ def populate_song_info(songlist):
     valence_array = []
     link_array = []
     
-  
+    #Loop to append song info to appropriate array
     for song in songlist:
         name_array.append(get_track_name(song))
         dance_array.append(get_scores(song,'danceability'))
@@ -49,6 +65,7 @@ def populate_song_info(songlist):
         valence_array.append(get_scores(song,'valence'))
         link_array.append(song)
     
+    #Put all song data in a library with proper labels
     song_data['Track Name'] = name_array
     song_data['danceability'] = dance_array
     song_data['energy'] = energy_array
@@ -61,14 +78,17 @@ def populate_song_info(songlist):
     
     return song_data
 
-#Get all artists for each track
+
 def get_track_artists(track):
+    '''Get all artists for each track'''
     artists = []
     for artist in spotify.track(track)['artists']:
         artists.append(artist['name'])
     return artists
 
-#Get track name
+
 def get_track_name(track):
+    '''Get track name'''
+
     return spotify.track(track)['name']
 
