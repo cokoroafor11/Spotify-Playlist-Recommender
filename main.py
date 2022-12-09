@@ -2,10 +2,12 @@ from setup import *
 import pandas as pd
 import numpy as np
 from IPython.display import display
-from playlists_db_setup import *
+from playlist_db_setup import *
 
 
-
+def feature_list_to_df():
+    df = pd.read_excel("spotify_features.xlsx")
+    return df
 
 def callback(text):
     try:
@@ -193,10 +195,10 @@ def print_user_statistics(statistics):
         ''')
         
 
-    def export_user_statistics(input_playlist):
-        df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
-        df.index = ['Average','Variance','Std Dev','Min', 'Max']
-        df.to_excel("Statistics.xlsx")       
+def export_user_statistics(input_playlist):
+    df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
+    df.index = ['Average','Variance','Std Dev','Min', 'Max']
+    df.to_excel("Statistics.xlsx")       
 
 
 def compare_features(avg,var,song_features):
@@ -248,10 +250,6 @@ def export_playlist(playlist):
 
 def run(user_playlist_input):
     '''This controls the main flow of the application, connecting to the Gui'''
-    
-    #Populate dataframe with list of playlists from excel
-    #playlists = excel_list_to_df()
-
     #Initialize array for final playlist outputted to user
     output_playlist = []
 
@@ -264,22 +262,21 @@ def run(user_playlist_input):
     #Print user playlist statistics
     print("Below are the statistics surrounding your inputted playlist")
     print_user_statistics(get_user_statistics(user_playlist))
+    
+    song_features = feature_list_to_df()
 
-    #Put all this info into an array
-    for playlist in playlists:
-
-        #This tells us how many features of the compared song are in range of the user playlist averages
-        song_features = convert_playlist_to_dataframe(playlist)
-        for song in song_features.iloc():
-            if (compare_features(user_avg,user_var,song)[0]> 1) & (song['link'] not in output_playlist):
-                output_playlist.append(song['link'])
+    #This tells us how many features of the compared song are in range of the user playlist averages
+    for song in song_features.iloc():
+        if (compare_features(user_avg,user_var,song)[0]> 1) & (song['link'] not in output_playlist):
+            output_playlist.append(song['link'])    
     
     export_playlist(output_playlist)
     
-
+features = feature_list_to_df()
+display(features)
 #display(convert_playlist_to_dataframe('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=cd77f41837b3443f'))
 #print(excel_list_to_df())
-run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
+#run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
 
 #CURRENT ISSUES
 #REMOVE DUPLICATES
@@ -287,5 +284,6 @@ run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458
 #What to do if inputs are improper for user playlist, or if inputs song instead of playlist
 #One of the spotipy functions maxes out at 100 songs
 
-#if __name__ == "__main__":
-   #run()
+if __name__ == "__main__":
+   #run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
+   run()

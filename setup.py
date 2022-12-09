@@ -2,12 +2,15 @@ import spotipy
 import pandas as pd
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-client_id = "c1f74565be774e65aa211462aaf5fed8"
-client_secret = "2edce4052f8f46639c0e112658572d66"
-spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= client_id,client_secret=client_secret),requests_timeout=10000,retries=10)
-
-
-
+import time
+client_id = "eb593361b7fd47f281e9df89589b5f17"
+client_secret = "7dba420c67ff4bff9c745a1a1f63b48b"
+username = "227wwrq4uc2on5ktl7bzaquaa"
+scope = "playlist-modify-private"
+redirect_uri = 'http://localhost:8888/callback'
+#token = util.prompt_for_user_token(username, scope, client_id, client_secret, redirect_uri)
+#spotify = spotipy.Spotify(auth=token)
+spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= client_id,client_secret=client_secret),requests_timeout=100,retries=3)
 
 
 

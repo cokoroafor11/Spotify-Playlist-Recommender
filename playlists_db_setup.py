@@ -2,6 +2,13 @@ from setup import *
 def excel_list_to_df():
     '''Create the dataframe from the excel sheet of playlists'''
 
+    df = pd.read_excel("Spotify Playlists Shorter.xlsx")
+    playlists = df['Link']
+    return playlists
+    
+def excel_list_to_df():
+    '''Create the dataframe from the excel sheet of playlists'''
+
     df = pd.read_excel("Spotify Playlists.xlsx")
     playlists = df['Link']
     return playlists
