@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 from main import *
 from setup import *
-import pandas as pd
-import numpy as np
 from IPython.display import display
 
 #Creating the Tkinter window and title
@@ -36,6 +34,4 @@ statistics_button.pack(side="right")
 #Mainloop makes sure the page stays open and keeps running
 window.mainloop()
 
-#Export as excel
-#Create new playlist in Spotify
-#Print Excel
+

@@ -196,6 +196,7 @@ def print_user_statistics(statistics):
         
 
 def export_user_statistics(input_playlist):
+    'This funtion exports statistics for the user to an excel sheet'
     df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
     df.index = ['Average','Variance','Std Dev','Min', 'Max']
     df.to_excel("Statistics.xlsx")       
@@ -272,18 +273,6 @@ def run(user_playlist_input):
     
     export_playlist(output_playlist)
     
-features = feature_list_to_df()
-display(features)
-#display(convert_playlist_to_dataframe('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=cd77f41837b3443f'))
-#print(excel_list_to_df())
-#run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
-
-#CURRENT ISSUES
-#REMOVE DUPLICATES
-#What to do when only one song is inputted
-#What to do if inputs are improper for user playlist, or if inputs song instead of playlist
-#One of the spotipy functions maxes out at 100 songs
 
 if __name__ == "__main__":
-   #run('https://open.spotify.com/playlist/5PJUOcZUy72vVk3OW54nX8?si=dcec28efd128458e')
    run()
