@@ -1,19 +1,16 @@
+'''
+Chinedu Okoroafor and Ignacio Villasmil
+'''
+
 from setup import *
 import pandas as pd
 import numpy as np
 from IPython.display import display
-from playlist_db_setup import *
 
 
 def feature_list_to_df():
     df = pd.read_excel("spotify_features.xlsx")
     return df
-
-def callback(text):
-    try:
-        user_songs = extract_songs(text)
-    except Exception as x:
-        print("You did not enter a valid URL/URI. Please try again.")
 
 
 def get_user_statistics(song_features):
@@ -196,11 +193,12 @@ def print_user_statistics(statistics):
         
 
 def export_user_statistics(input_playlist):
-    'This funtion exports statistics for the user to an excel sheet'
+    '''This funtion exports statistics for the user to an excel sheet'''
+
     df = pd.DataFrame(get_user_statistics(convert_playlist_to_dataframe(input_playlist)))
     df.index = ['Average','Variance','Std Dev','Min', 'Max']
-    df.to_excel("Statistics.xlsx")       
-
+    df.to_excel("Statistics.xlsx")
+    print("Export is complete.")
 
 def compare_features(avg,var,song_features):
     '''
@@ -250,6 +248,7 @@ def export_playlist(playlist):
 
 
 def run(user_playlist_input):
+    print(user_playlist_input)
     '''This controls the main flow of the application, connecting to the Gui'''
     #Initialize array for final playlist outputted to user
     output_playlist = []
@@ -271,8 +270,7 @@ def run(user_playlist_input):
         if (compare_features(user_avg,user_var,song)[0]> 1) & (song['link'] not in output_playlist):
             output_playlist.append(song['link'])    
     
+    #Export recommendations to Songs.xlsx and print message stating operation has been complete.
     export_playlist(output_playlist)
-    
+    print("Your song recommendatino list has been created. Please find Songs.xlsx in this project folder.")
 
-if __name__ == "__main__":
-   run()

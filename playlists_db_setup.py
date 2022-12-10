@@ -1,3 +1,7 @@
+'''
+Chinedu Okoroafor and Ignacio Villasmil
+'''
+
 from setup import *
 import pandas as pd
 
@@ -15,7 +19,8 @@ def excel_list_to_df():
     return playlists
     
 def export_song_feature_df(df):
-    ''
+    '''export song features to an excel file'''
+
     df.to_excel("spotify_features.xlsx")
     
     

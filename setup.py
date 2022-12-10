@@ -1,8 +1,11 @@
+'''
+Chinedu Okoroafor and Ignacio Villasmil
+'''
+
 import spotipy
 import pandas as pd
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
-import time
 client_id = "eb593361b7fd47f281e9df89589b5f17"
 client_secret = "7dba420c67ff4bff9c745a1a1f63b48b"
 username = "227wwrq4uc2on5ktl7bzaquaa"
@@ -17,11 +20,15 @@ spotify = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id= clien
 def extract_songs(playlist):
     '''Function to extract songs from a playlist: Will run this for all the playlists being added'''
 
+    #Make sure playlist input is string
     if type(playlist) != str: 
         playlist = str(playlist)
-        
+
+    #Get playlist tracks    
     playlist_tracks =  spotify.playlist_tracks(playlist)
     tracks = []
+
+    #Append tracks to list if no type error
     for elem in playlist_tracks['items']:
         try:
             tracks.append(elem['track']['external_urls']['spotify'])
@@ -33,7 +40,10 @@ def extract_songs(playlist):
 
 def get_scores(song, feature):
     '''Function to get score for feature type of a song'''
+
     feature_score = 0
+
+    #Get audio features if no type error, otherwise skip
     try:
         feature_score = spotify.audio_features(song)[0][feature]
     except TypeError:
@@ -43,8 +53,12 @@ def get_scores(song, feature):
    
 def convert_playlist_to_dataframe(playlist):
     '''Convert a playlist of songs to a dataframe'''
+
+    #Extract songs and populate song features dictionary
     songlist = extract_songs(playlist)
     song_data = populate_song_info(songlist)
+
+    #Create dataframe
     df = pd.DataFrame(song_data)
     return df
 
@@ -93,8 +107,10 @@ def populate_song_info(songlist):
 
 def get_track_artists(track):
     '''Get all artists for each track'''
-
+    
     artists = []
+    
+    #Iterate through all avaiable artists, append to new array
     for artist in spotify.track(track)['artists']:
         artists.append(artist['name'])
     return artists
