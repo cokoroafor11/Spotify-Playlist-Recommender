@@ -6,7 +6,7 @@ from setup import *
 import pandas as pd
 import numpy as np
 from IPython.display import display
-
+from playlists_db_setup import *
 
 def feature_list_to_df():
     df = pd.read_excel("spotify_features.xlsx")
@@ -272,5 +272,5 @@ def run(user_playlist_input):
     
     #Export recommendations to Songs.xlsx and print message stating operation has been complete.
     export_playlist(output_playlist)
-    print("Your song recommendatino list has been created. Please find Songs.xlsx in this project folder.")
+    print("Your song recommendation list has been created. Please find Songs.xlsx in this project folder.")
 

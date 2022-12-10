@@ -17,6 +17,7 @@ class Recommender(tk.Tk):
         self.title = Label(text = "Welcome to the Spotify Recommender!")
         self.instructions1 = Label(text = "Instructions: Input link, then click the button to get your recommended songs.") 
         self.instructions2= Label(text ="If you're interested in your playlist statistics, click Get Stats.")
+        self.instructions3= Label(text ="Note: Let the window run, even if it seems frozen. It will finish.")
         self.entry = tk.Entry(self)
         self.button = tk.Button(self,text="Get Songs",command = [self.get_input,self.run_main])
         self.button.bind('<Button-1>',lambda run: self.run_main())
@@ -28,6 +29,7 @@ class Recommender(tk.Tk):
         self.button2.pack()
         self.instructions1.pack()
         self.instructions2.pack()
+        self.instructions3.pack()
 
     def get_input(self):
         print(self.entry.get())
